@@ -3,7 +3,5 @@
 reload("user.options")
 reload("user.keymaps")
 
--- plugins 
-reload("user.plugin.telescope")
-reload("user.plugin.plugins")
-reload("user.plugin.which-key")
+-- plugins
+reload("user.plugins")

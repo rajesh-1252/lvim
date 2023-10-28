@@ -1,0 +1,135 @@
+{
+  "named-arrow-function": {
+    "prefix": "caf",
+    "body": "const ${1:functionName} = (${2:arg}): ${3:returnType} => {\n  ${4}\n}",
+    "description": "Create a named arrow function"
+  },
+  "named-function": {
+    "prefix": "cnf",
+    "body": "function ${1:functionName}(${2:arg}) {\n  ${3}\n}",
+    "description": "Create a named function"
+  },
+  "model-boiler-plate": {
+    "prefix": "mbp",
+    "body": [
+      "import { Schema, model } from 'mongoose';",
+      "const ${TM_FILENAME_BASE/(.*)/${1:/capitalize}/}Schema= new Schema({",
+      "isDeleted : {",
+      "type : Boolean,",
+      "required : false,",
+      "},",
+      "},",
+      "{timestamps : true}",
+      ")",
+      "const ${TM_FILENAME_BASE/(.*)/${1:/capitalize}/}Model = model('${TM_FILENAME_BASE}',${TM_FILENAME_BASE/(.*)/${1:/capitalize}/}Schema);",
+      "export default  ${TM_FILENAME_BASE/(.*)/${1:/capitalize}/}Model ;"
+    ],
+    "description": "boiler plate for model in node js"
+  },
+  "styled-component-boiler-plate": {
+    "prefix": "sbp",
+    "body": [
+      "import styled from 'styled-components'",
+      "const ${TM_FILENAME_BASE}Styles = styled.div`$1`",
+      "export default  ${TM_FILENAME_BASE}Styles;"
+    ],
+    "description": "Import styled components"
+  },
+  "required true": {
+    "scope": "javascript,typescript,",
+    "prefix": "rt",
+    "body": [
+      "required : true,"
+    ],
+    "description": "required true"
+  },
+  "default false": {
+    "scope": "javascript,typescript,",
+    "prefix": "df",
+    "body": [
+      "default: false,"
+    ],
+    "description": "default false"
+  },
+  "default true": {
+    "scope": "javascript,typescript,",
+    "prefix": "dt",
+    "body": [
+      "default: true,"
+    ],
+    "description": "default true"
+  },
+  "type String": {
+    "scope": "javascript,typescript,",
+    "prefix": "ts",
+    "body": [
+      "type: String,"
+    ],
+    "description": "type String"
+  },
+  "type Boolean": {
+    "scope": "javascript,typescript,",
+    "prefix": "tb",
+    "body": [
+      "type: Boolean,"
+    ],
+    "description": "type Boolean"
+  },
+  "type Number": {
+    "scope": "javascript,typescript,",
+    "prefix": "tn",
+    "body": [
+      "type: Number,"
+    ],
+    "description": "type Number"
+  },
+  "type ObjectId": {
+    "scope": "javascript,typescript,",
+    "prefix": "ti",
+    "body": [
+      "type: Schema.Types.ObjectId,"
+    ],
+    "description": "type Schema.Types.ObjectId,"
+  },
+  "isDeleted": {
+    "scope": "javascript,typescript,",
+    "prefix": "isdel",
+    "body": [
+      "isDeleted: { ",
+      "type: Boolean,",
+      "default: false,",
+      "}"
+    ],
+    "description": "type Schema.Types.ObjectId,"
+  },
+  "Mongoose Schema": {
+    "scope": "javascript,typescript",
+    "prefix": "us",
+    "body": [
+      "${name}:  { ",
+      " type : ${String} , ",
+      "required : [true, 'Please Provide ${something}']}"
+    ],
+    "description": "use schema"
+  },
+  "Find All": {
+    "scope": "javascript,typescript",
+    "prefix": "findAll",
+    "body": [
+      "const result = $1.find({",
+      "$2",
+      "isDeleted: false,",
+      "});"
+    ],
+    "description": "use schema"
+  }
+
+  "Export default ": {
+    "scope": "javascript,typescript",
+    "prefix": "ed",
+    "body": [
+      "export default $1"
+    ],
+    "description": "use schema"
+  }
+}

@@ -1,5 +1,4 @@
 lvim.plugins = {
-
   {
     "folke/persistence.nvim",
     event = "BufReadPre",
@@ -11,6 +10,39 @@ lvim.plugins = {
     end
   },
   { 'jose-elias-alvarez/typescript.nvim' },
+  {
+    'Mofiqul/vscode.nvim',
+  },
+  {
+    "catppuccin/nvim",
+    name = "catppuccin",
+    priority = 1000
+  },
+
+  {
+    "folke/todo-comments.nvim",
+    event = "BufRead",
+    config = function()
+      require("todo-comments").setup()
+    end
+  },
+  { "tpope/vim-dadbod" },
+  { "kristijanhusak/vim-dadbod-ui" },
+  -- { "kristijanhusak/vim-dadbod-completion" },
+  --
+
+  {
+    "windwp/nvim-ts-autotag",
+    config = function()
+      require('nvim-treesitter.configs').setup({
+
+        autotag = {
+          enable = true,
+        }
+      })
+    end
+  },
+  { "mattn/emmet-vim" },
   { "christoomey/vim-tmux-navigator" },
   { "tpope/vim-surround" },
   {
@@ -29,11 +61,11 @@ lvim.plugins = {
       end)
     end,
   },
-{
-  "folke/todo-comments.nvim",
-  event = "BufRead",
-  config = function ()
-    require('todo-comments').setup()
-  end
-}
+  {
+    "folke/todo-comments.nvim",
+    event = "BufRead",
+    config = function()
+      require('todo-comments').setup()
+    end
+  },
 }
