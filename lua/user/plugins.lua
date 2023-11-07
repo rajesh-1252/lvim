@@ -13,6 +13,7 @@ lvim.plugins = {
   {
     'Mofiqul/vscode.nvim',
   },
+  { 'styled-components/vim-styled-components' },
   {
     "catppuccin/nvim",
     name = "catppuccin",
