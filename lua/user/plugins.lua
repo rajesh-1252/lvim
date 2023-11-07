@@ -1,5 +1,16 @@
 lvim.plugins = {
   {
+    "nvim-neorg/neorg",
+    ft = "norg",   -- lazy-load on filetype
+    config = true, -- run require("neorg").setup()
+  },
+  {
+    "AckslD/nvim-neoclip.lua",
+    config = function()
+      require('neoclip').setup()
+    end,
+  },
+  {
     "folke/persistence.nvim",
     event = "BufReadPre",
     config = function()
@@ -19,7 +30,6 @@ lvim.plugins = {
     name = "catppuccin",
     priority = 1000
   },
-
   {
     "folke/todo-comments.nvim",
     event = "BufRead",
@@ -31,12 +41,10 @@ lvim.plugins = {
   { "kristijanhusak/vim-dadbod-ui" },
   -- { "kristijanhusak/vim-dadbod-completion" },
   --
-
   {
     "windwp/nvim-ts-autotag",
     config = function()
       require('nvim-treesitter.configs').setup({
-
         autotag = {
           enable = true,
         }
@@ -47,11 +55,13 @@ lvim.plugins = {
   { "christoomey/vim-tmux-navigator" },
   { "tpope/vim-surround" },
   {
-    'phaazon/hop.nvim',
-    branch = 'v2',
+    "phaazon/hop.nvim",
+    event = "BufRead",
     config = function()
-      require('hop').setup()
-    end
+      require("hop").setup()
+      vim.api.nvim_set_keymap("n", "s", ":HopChar2<cr>", { silent = true })
+      vim.api.nvim_set_keymap("n", "S", ":HopWord<cr>", { silent = true })
+    end,
   },
   {
     'AckslD/nvim-trevJ.lua',
