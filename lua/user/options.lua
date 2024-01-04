@@ -1,7 +1,7 @@
 vim.opt.number          = true
 vim.opt.cursorline      = false
 lvim.format_on_save     = true
-lvim.transparent_window = true
+lvim.transparent_window = false
 lvim.colorscheme        = "catppuccin"
 -- lvim.colorscheme        = "vscode"
 vim.opt.wrap            = true
