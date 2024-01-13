@@ -1,8 +1,8 @@
 lvim.plugins = {
 
-  {
-    "ThePrimeagen/harpoon",
-  },
+  -- {
+  --   "ThePrimeagen/harpoon",
+  -- },
   {
     "nvim-lua/plenary.nvim",
   },
@@ -31,17 +31,17 @@ lvim.plugins = {
       },
     },
   },
-  {
-    "nvim-neorg/neorg",
-    ft = "norg",   -- lazy-load on filetype
-    config = true, -- run require("neorg").setup()
-  },
-  {
-    "AckslD/nvim-neoclip.lua",
-    config = function()
-      require('neoclip').setup()
-    end,
-  },
+  -- {
+  --   "nvim-neorg/neorg",
+  --   ft = "norg",   -- lazy-load on filetype
+  --   config = true, -- run require("neorg").setup()
+  -- },
+  -- {
+  --   "AckslD/nvim-neoclip.lua",
+  --   config = function()
+  --     require('neoclip').setup()
+  --   end,
+  -- },
   {
     "folke/persistence.nvim",
     event = "BufReadPre",
@@ -85,32 +85,25 @@ lvim.plugins = {
   },
   { "mattn/emmet-vim" },
   { "christoomey/vim-tmux-navigator" },
-  { "tpope/vim-surround" },
-  {
-    "phaazon/hop.nvim",
-    event = "BufRead",
-    config = function()
-      require("hop").setup({
-        keys = 'asdghklqwertyuiopzxcvbnmfj'
-      })
-      vim.api.nvim_set_keymap("n", "f", ":HopChar2<cr>", { silent = true })
-      vim.api.nvim_set_keymap("n", "S", ":HopWord<cr>", { silent = true })
-    end,
-  },
-  {
-    'AckslD/nvim-trevJ.lua',
-    config = 'require("trevj").setup()',
-    init = function()
-      vim.keymap.set('n', '<leader>j', function()
-        require('trevj').format_at_cursor()
-      end)
-    end,
-  },
-  {
-    "folke/todo-comments.nvim",
-    event = "BufRead",
-    config = function()
-      require('todo-comments').setup()
-    end
-  },
+  -- { "tpope/vim-surround" },
+  -- {
+  --   "phaazon/hop.nvim",
+  --   event = "BufRead",
+  --   config = function()
+  --     require("hop").setup({
+  --       keys = 'asdghklqwertyuiopzxcvbnmfj'
+  --     })
+  --     vim.api.nvim_set_keymap("n", "f", ":HopChar2<cr>", { silent = true })
+  --     vim.api.nvim_set_keymap("n", "S", ":HopWord<cr>", { silent = true })
+  --   end,
+  -- },
+  -- {
+  --   'AckslD/nvim-trevJ.lua',
+  --   config = 'require("trevj").setup()',
+  --   init = function()
+  --     vim.keymap.set('n', '<leader>j', function()
+  --       require('trevj').format_at_cursor()
+  --     end)
+  --   end,
+  -- },
 }
