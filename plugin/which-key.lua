@@ -45,6 +45,7 @@ wk.mappings['g'] = {
 
 
 
+wk.mappings['l'] = {}
 
 -- harpoon
 wk.mappings['h'] = {
@@ -64,4 +65,17 @@ wk.mappings["S"] = {
   s = { "<cmd>lua require('persistence').load()<cr>", kind.icons.clock .. " Reload last session for dir" },
   l = { "<cmd>lua require('persistence').load({ last = true })<cr>", kind.icons.clock .. " Restore last session" },
   Q = { "<cmd>lua require('persistence').stop()<cr>", kind.icons.exit .. " Quit without saving session" },
+}
+
+
+wk.mappings["o"] = {
+  name = "Obsidian",
+  c = { "<cmd>lua require('obsidian').util.toggle_checkbox()<CR>", "Check Checkbox" },
+  t = { "<cmd>ObsidianTemplate<CR>", "Insert Obsidian Template" },
+  o = { "<cmd>ObsidianOpen<CR>", "Open in Obsidian App" },
+  b = { "<cmd>ObsidianBacklinks<CR>", "Show Obsidian Backlinks" },
+  l = { "<cmd>ObsidianLinks<CR>", "Show Obsidian Links" },
+  n = { "<cmd>ObsidianNew<CR>", "Create New Note" },
+  s = { "<cmd>ObsidianSearch<CR>", "Search Obsidian" },
+  q = { "<cmd>ObsidianQuickSwitch<CR>", "Quick Switch" },
 }

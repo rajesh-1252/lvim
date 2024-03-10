@@ -1,3 +1,5 @@
+-- local ufo = require('plug.nvim-ufo')
+
 lvim.plugins = {
 
   -- {
@@ -12,30 +14,8 @@ lvim.plugins = {
     opts = {},
     -- stylua: ignore
     keys = {
-      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end,   desc = "Flash" },
-      -- { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
-      { "r", mode = "o",               function() require("flash").remote() end, desc = "Remote Flash" },
-      {
-        "R",
-        mode = { "o", "x" },
-        function() require("flash").treesitter_search() end,
-        desc =
-        "Treesitter Search"
-      },
-      {
-        "<c-s>",
-        mode = { "c" },
-        function() require("flash").toggle() end,
-        desc =
-        "Toggle Flash Search"
-      },
     },
   },
-  -- {
-  --   "nvim-neorg/neorg",
-  --   ft = "norg",   -- lazy-load on filetype
-  --   config = true, -- run require("neorg").setup()
-  -- },
   -- {
   --   "AckslD/nvim-neoclip.lua",
   --   config = function()
@@ -86,17 +66,6 @@ lvim.plugins = {
   { "mattn/emmet-vim" },
   { "christoomey/vim-tmux-navigator" },
   -- { "tpope/vim-surround" },
-  -- {
-  --   "phaazon/hop.nvim",
-  --   event = "BufRead",
-  --   config = function()
-  --     require("hop").setup({
-  --       keys = 'asdghklqwertyuiopzxcvbnmfj'
-  --     })
-  --     vim.api.nvim_set_keymap("n", "f", ":HopChar2<cr>", { silent = true })
-  --     vim.api.nvim_set_keymap("n", "S", ":HopWord<cr>", { silent = true })
-  --   end,
-  -- },
   -- {
   --   'AckslD/nvim-trevJ.lua',
   --   config = 'require("trevj").setup()',
@@ -176,13 +145,194 @@ lvim.plugins = {
       require('goto-preview').setup {}
     end
   },
-  {
-    'VonHeikemen/fine-cmdline.nvim',
-    dependencies = {
-      'MunifTanjim/nui.nvim'
-    },
-    config = function()
-    end,
-  }
 
+
+
+
+  -- {
+  --   'nvim-telescope/telescope.nvim',
+  --   config = function () {
+  --     require('telescope')
+  --   }
+  -- },
+  {
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    opts = {
+      -- add any options here
+    },
+    dependencies = {
+      -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+      "MunifTanjim/nui.nvim",
+      -- OPTIONAL:
+      --   `nvim-notify` is only needed, if you want to use the notification view.
+      --   If not available, we use `mini` as the fallback
+      "rcarriga/nvim-notify",
+    },
+    -- config = require("noice").setup({
+    --   lsp = {
+    --     -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+    --     override = {
+    --       ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+    --       ["vim.lsp.util.stylize_markdown"] = true,
+    --       ["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
+    --     },
+    --   },
+    --   -- you can enable a preset for easier configuration
+    --   presets = {
+    --     bottom_search = true,         -- use a classic bottom cmdline for search
+    --     command_palette = true,       -- position the cmdline and popupmenu together
+    --     long_message_to_split = true, -- long messages will be sent to a split
+    --     inc_rename = false,           -- enables an input dialog for inc-rename.nvim
+    --     lsp_doc_border = false,       -- add a border to hover docs and signature help
+    --   },
+    -- })
+  },
+  { "rcarriga/nvim-notify", enabled = false },
+  {
+    "romgrk/nvim-treesitter-context",
+    config = function()
+      require("treesitter-context").setup {
+        enable = true,   -- Enable this plugin (Can be enabled/disabled later via commands)
+        throttle = true, -- Throttles plugin updates (may improve performance)
+        max_lines = 3,   -- How many lines the window should span. Values <= 0 mean no limit.
+        patterns = {     -- Match patterns for TS nodes. These get wrapped to match at word boundaries.
+          -- For all filetypes
+          -- Note that setting an entry here replaces all other patterns for this entry.
+          -- By setting the 'default' entry below, you can control which nodes you want to
+          -- appear in the context window.
+          default = {
+            'class',
+            'function',
+            'method',
+          },
+        },
+      }
+    end
+  },
+  {
+    "kevinhwang91/nvim-ufo",
+    dependencies = "kevinhwang91/promise-async",
+    event = "VeryLazy",
+    opts = {
+      -- INFO: Uncomment to use treeitter as fold provider, otherwise nvim lsp is used
+      provider_selector = function(bufnr, filetype, buftype)
+        return { "treesitter", "indent" }
+      end,
+      open_fold_hl_timeout = 400,
+      close_fold_kinds = { "imports", "comment" },
+      preview = {
+        win_config = {
+          border = { "", "─", "", "", "", "─", "", "" },
+          -- winhighlight = "Normal:Folded",
+          winblend = 0,
+        },
+        mappings = {
+          scrollU = "<C-k>",
+          scrollD = "<C-j>",
+          jumpTop = "[",
+          jumpBot = "]",
+        },
+      },
+    },
+    disable_ft = { 'trouble' },
+    init = function()
+      vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
+      vim.o.foldcolumn = "1" -- '0' is not bad
+      vim.o.foldlevel = 99   -- Using ufo provider need a large value, feel free to decrease the value
+      vim.o.foldlevelstart = 99
+      vim.o.foldenable = true
+    end,
+    config = function(_, opts)
+      local handler = function(virtText, lnum, endLnum, width, truncate)
+        local newVirtText = {}
+        local totalLines = vim.api.nvim_buf_line_count(0)
+        local foldedLines = endLnum - lnum
+        local suffix = ("  %d %d%%"):format(foldedLines, foldedLines / totalLines * 100)
+        local sufWidth = vim.fn.strdisplaywidth(suffix)
+        local targetWidth = width - sufWidth
+        local curWidth = 0
+        for _, chunk in ipairs(virtText) do
+          local chunkText = chunk[1]
+          local chunkWidth = vim.fn.strdisplaywidth(chunkText)
+          if targetWidth > curWidth + chunkWidth then
+            table.insert(newVirtText, chunk)
+          else
+            chunkText = truncate(chunkText, targetWidth - curWidth)
+            local hlGroup = chunk[2]
+            table.insert(newVirtText, { chunkText, hlGroup })
+            chunkWidth = vim.fn.strdisplaywidth(chunkText)
+            -- str width returned from truncate() may less than 2nd argument, need padding
+            if curWidth + chunkWidth < targetWidth then
+              suffix = suffix .. (" "):rep(targetWidth - curWidth - chunkWidth)
+            end
+            break
+          end
+          curWidth = curWidth + chunkWidth
+        end
+        local rAlignAppndx =
+            math.max(math.min(vim.opt.textwidth["_value"], width - 1) - curWidth - sufWidth, 0)
+        suffix = (" "):rep(rAlignAppndx) .. suffix
+        table.insert(newVirtText, { suffix, "MoreMsg" })
+        return newVirtText
+      end
+      opts["fold_virt_text_handler"] = handler
+      require("ufo").setup(opts)
+      vim.keymap.set("n", "<leader>lo", require("ufo").openAllFolds)
+      vim.keymap.set("n", "<leader>lc", require("ufo").closeAllFolds)
+      vim.keymap.set("n", "zr", require("ufo").openFoldsExceptKinds)
+      vim.keymap.set('n', '<leader>ll', 'za', {})
+      vim.keymap.set("n", "<leader>lm", require("ufo").closeFoldsWith)
+      vim.keymap.set("n", "<leader>lp", require("ufo").peekFoldedLinesUnderCursor)
+
+      -- vim.keymap.set("n", "K", function()
+      --   local winid = require("ufo").peekFoldedLinesUnderCursor()
+      --   if not winid then
+      --     -- vim.lsp.buf.hover()
+      --     vim.cmd [[ vim.lsp.buf.hover() ]]
+      --   end
+      -- end)
+    end,
+  },
+  {
+    "epwalsh/obsidian.nvim",
+    version = "*", -- recommended, use latest release instead of latest commit
+    lazy = true,
+    ft = "markdown",
+    -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
+    -- event = {
+    --   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
+    --   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md"
+    --   "BufReadPre path/to/my-vault/**.md",
+    --   "BufNewFile path/to/my-vault/**.md",
+    -- },
+    dependencies = {
+      -- Required.
+      "nvim-lua/plenary.nvim",
+
+      -- see below for full list of optional dependencies 👇
+    },
+    opts = {
+      workspaces = {
+        {
+          name = "personal",
+          path = "/home/mrnobody/Desktop/knowlegeDB",
+        },
+      },
+    },
+    -- config = function()
+    --   require('obsidian').setup({
+    vim.keymap.set("n", "<leader>oc", "<cmd>lua require('obsidian').util.toggle_checkbox()<CR>",
+      { desc = "Obsidian Check Checkbox" }),
+    vim.keymap.set("n", "<leader>ot", "<cmd>ObsidianTemplate<CR>", { desc = "Insert Obsidian Template" }),
+    vim.keymap.set("n", "<leader>oo", "<cmd>ObsidianOpen<CR>", { desc = "Open in Obsidian App" }),
+    vim.keymap.set("n", "<leader>ob", "<cmd>ObsidianBacklinks<CR>", { desc = "Show ObsidianBacklinks" }),
+    vim.keymap.set("n", "<leader>ol", "<cmd>ObsidianLinks<CR>", { desc = "Show ObsidianLinks" }),
+    vim.keymap.set("n", "<leader>on", "<cmd>ObsidianNew<CR>", { desc = "Create New Note" }),
+    vim.keymap.set("n", "<leader>os", "<cmd>ObsidianSearch<CR>", { desc = "Search Obsidian" }),
+    vim.keymap.set("n", "<leader>oq", "<cmd>ObsidianQuickSwitch<CR>", { desc = "Quick Switch" }),
+    --   })
+    -- end
+  }
+  -- require('plug.nvim-ufo')
 }
