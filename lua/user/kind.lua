@@ -52,6 +52,8 @@ M.icons = {
   exit = " ",
   repo = "",
   term = " ",
+  brain = "󰧑",
+  brainOutline = ""
 }
 
 M.nvim_tree_icons = {
@@ -149,5 +151,6 @@ M.file_icons = {
   LightGreen = { "", "", "", "﵂" },
   White = { "", "", "", "", "", "" },
 }
+
 
 return M
